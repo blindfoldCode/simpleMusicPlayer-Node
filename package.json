@@ -1,0 +1,22 @@
+{
+    "name": "musicplayer",
+    "version": "1.0.0",
+    "description": "A basic music player built in node",
+    "main": "app.js",
+    "dependencies": {},
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://BlueFlight21@bitbucket.org/BlueFlight21/music-player.git"
+    },
+    "keywords": [
+    "player",
+    "music"
+  ],
+    "author": "Franz",
+    "license": "ISC",
+    "homepage": "https://bitbucket.org/BlueFlight21/music-player#readme"
+}

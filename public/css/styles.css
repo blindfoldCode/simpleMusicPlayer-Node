@@ -1,0 +1,37 @@
+@import url(https://fonts.googleapis.com/css?family=Catamaran:400,700);
+#list td:not(.activeMusicListItem):not(.progress)::before,
+.activeMusicListItem::before,
+.progress::before {
+    width: 30px;
+    display: list-item;
+    float: left;
+    vertical-align: top;
+    padding-right: 10px
+}
+
+#list td,
+h1 {
+    font-family: Catamaran, sans-serif
+}
+
+#list td{
+    list-style-type: none;
+    margin: 8px 0;
+    cursor: pointer
+}
+
+#list td:not(.activeMusicListItem):not(.progress)::before {
+    content: url(../icons/play.svg)
+}
+
+.activeMusicListItem::before {
+    content: url(../icons/pause.svg)
+}
+
+.progress::before {
+    content: url(../icons/progress.gif)
+}
+
+h1 {
+    font-weight: 700
+}
