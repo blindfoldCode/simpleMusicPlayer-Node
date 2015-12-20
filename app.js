@@ -17,7 +17,7 @@ app.get('/lists', function (req, res) {
 
             }
             result[index] = result[index].substr(0, result[index].lastIndexOf('.')) || result[index];
-        })
+        });
 
         res.send(result);
     });
@@ -30,7 +30,7 @@ app.get('/music/:id', function (req, res) {
     var asset = decodeURIComponent(req.url);
     res.download('.' + asset);
 
-})
+});
 
 app.get('/metaData/:id', function (req, res) {
 
@@ -39,15 +39,7 @@ app.get('/metaData/:id', function (req, res) {
         type: id3.OPEN_LOCAL
     }, function (err, tags) {
         // tags now contains your ID3 tags
-        res.send(tags)
+        res.send(tags);
     });
-
-
-})
-
-
-
-
-
-
+});
 app.listen(3000);
