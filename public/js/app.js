@@ -6,7 +6,8 @@ $.ajax({
     }
 });
 var forPaused = false,
-    lastIndex, hasListener = false;
+    lastIndex, hasListener = false,
+    time = document.querySelector("#time");
 
 function loop(arrayMusic) {
     var tableString = "";
@@ -22,7 +23,6 @@ function loop(arrayMusic) {
 
 function click(element, index, array) {
     element.addEventListener("click", function (event) {
-
         if (forPaused === true && lastIndex === this) {
             pause();
         } else {
@@ -62,16 +62,9 @@ function pause() {
     document.querySelector("#music").pause();
     forPaused = false;
 }
-
-
-
-
 function changeClass(elem, applyClass) {
     elem.setAttribute("class", applyClass);
 }
-
-
-
 function killClass(findClasses) {
     if (typeof findClasses === 'string') {
         findClasses = [findClasses];
@@ -84,3 +77,9 @@ function killClass(findClasses) {
         });
     }
 }
+
+function streamTime() {
+time.innerHTML =Math.floor(this.currentTime*10) /10 ;
+
+}
+document.querySelector("#music").ontimeupdate = streamTime;
