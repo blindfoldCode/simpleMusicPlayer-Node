@@ -11,7 +11,7 @@ var forPaused = false,
 function loop(arrayMusic) {
     var tableString = "";
     for (var i = 0; i < arrayMusic.length; i++) {
-        tableString += '<tr><td>'
+        tableString += '<tr><td>';
         tableString += arrayMusic[i];
         tableString += '</td></tr>';
     }
@@ -23,12 +23,12 @@ function loop(arrayMusic) {
 function click(element, index, array) {
     element.addEventListener("click", function (event) {
 
-        if (forPaused == true && lastIndex == this) {
+        if (forPaused === true && lastIndex === this) {
             pause();
         } else {
             play(this.textContent || this.innerText, this);
         }
-    })
+    });
 }
 
 function play(asset, elem) {
@@ -45,7 +45,7 @@ function play(asset, elem) {
     document.querySelector('#music').oncanplaythrough = function () {
         hasListener = true;
         playing(elem);
-    }
+    };
     if (hasListener) {
         playing(elem);
     }
@@ -67,7 +67,7 @@ function pause() {
 
 
 function changeClass(elem, applyClass) {
-    elem.setAttribute("class", applyClass)
+    elem.setAttribute("class", applyClass);
 }
 
 
