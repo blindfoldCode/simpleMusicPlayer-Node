@@ -72,17 +72,21 @@ window.onload = function() {
   }
 
   function killClass(findClasses) {
+    let elems = [];
     if (typeof findClasses === 'string') {
-      findClasses = [findClasses];
+      elems.push(findClasses);
+    } else {
+      for (let elem of findClasses) {
+        elems.push(elem);
+      }
     }
-
-    for (let i = 0; i < findClasses.length; i++) {
-      let set = document.querySelectorAll("." + findClasses[i]);
-      [].forEach.call(set, function(item) {
-        item.setAttribute("class", "");
-      });
-    }
+    [].forEach.call(elems, function(item) {
+      if (document.querySelector(`.${item}`)) {
+        document.querySelector(`.${item}`).setAttribute("class", "");
+      }
+    });
   }
+
 
   function streamTime() {
     time.innerHTML = Math.floor(music.currentTime * 1000) / 1000;
