@@ -10,7 +10,7 @@ window.onload = function() {
   });
 
   let forPaused = false,
-    lastIndex, hasListener = false;
+    lastIndex;
   const time = document.querySelector("#time"),
     music = document.querySelector("#music");
 
@@ -35,24 +35,17 @@ window.onload = function() {
   }
 
   function play(asset, elem) {
-
     killClass(["activeMusicListItem", "progress"]);
     changeClass(elem, "progress");
     document.querySelector("h1").innerHTML = asset;
-
     if (lastIndex != elem) {
       let link = `./music/${asset}.mp3`;
       music.src = link;
       lastIndex = elem;
     }
-
     music.oncanplaythrough = function() {
-      hasListener = true;
       playing(elem);
     };
-    if (hasListener) {
-      playing(elem);
-    }
   }
 
   function playing(elem) {
