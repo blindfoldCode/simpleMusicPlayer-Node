@@ -1,4 +1,4 @@
-(function() {
+window.onload = function() {
   'use strict';
 
   $.ajax({
@@ -16,10 +16,8 @@
 
   function loop(arrayMusic) {
     let tableString = "";
-    for (let i = 0; i < arrayMusic.length; i++) {
-      tableString += '<tr><td>';
-      tableString += arrayMusic[i];
-      tableString += '</td></tr>';
+    for (let mp3 of arrayMusic) {
+      tableString += `<tr><td>${mp3}</td></tr>`;
     }
     document.querySelector("#list").innerHTML = tableString;
     let items = document.querySelectorAll("#list td");
@@ -37,17 +35,18 @@
   }
 
   function play(asset, elem) {
+
     killClass(["activeMusicListItem", "progress"]);
     changeClass(elem, "progress");
     document.querySelector("h1").innerHTML = asset;
 
     if (lastIndex != elem) {
-      let link = './music/' + asset + '.mp3';
-      document.querySelector('#music').src = link;
+      let link = `./music/${asset}.mp3`;
+      music.src = link;
       lastIndex = elem;
     }
 
-    document.querySelector('#music').oncanplaythrough = function() {
+    music.oncanplaythrough = function() {
       hasListener = true;
       playing(elem);
     };
@@ -57,14 +56,14 @@
   }
 
   function playing(elem) {
-  music.play();
+    music.play();
     changeClass(elem, "activeMusicListItem");
     forPaused = true;
   }
 
   function pause() {
     killClass("activeMusicListItem");
-  music.pause();
+    music.pause();
     forPaused = false;
   }
 
@@ -86,7 +85,7 @@
   }
 
   function streamTime() {
-    time.innerHTML = Math.floor(mus.currentTime * 1000) / 1000;
+    time.innerHTML = Math.floor(music.currentTime * 1000) / 1000;
   }
   music.ontimeupdate = streamTime;
-})();
+};
