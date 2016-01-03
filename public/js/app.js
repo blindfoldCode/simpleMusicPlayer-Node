@@ -79,7 +79,7 @@ function killClass(findClasses) {
 }
 
 function streamTime() {
-time.innerHTML =Math.floor(this.currentTime*10) /10 ;
+  time.innerHTML =Math.floor(this.currentTime*10) /10 ;
 
 }
 document.querySelector("#music").ontimeupdate = streamTime;
