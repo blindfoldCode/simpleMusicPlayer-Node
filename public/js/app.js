@@ -1,85 +1,92 @@
-$.ajax({
+(function() {
+  'use strict';
+
+  $.ajax({
     url: './lists',
-    success: function (res) {
+    success: function(res) {
 
-        loop(res);
+      loop(res);
     }
-});
-var forPaused = false,
-    lastIndex, hasListener = false,
-    time = document.querySelector("#time");
+  });
 
-function loop(arrayMusic) {
-    var tableString = "";
-    for (var i = 0; i < arrayMusic.length; i++) {
-        tableString += '<tr><td>';
-        tableString += arrayMusic[i];
-        tableString += '</td></tr>';
+  let forPaused = false,
+    lastIndex, hasListener = false;
+  const time = document.querySelector("#time"),
+    music = document.querySelector("#music");
+
+  function loop(arrayMusic) {
+    let tableString = "";
+    for (let i = 0; i < arrayMusic.length; i++) {
+      tableString += '<tr><td>';
+      tableString += arrayMusic[i];
+      tableString += '</td></tr>';
     }
     document.querySelector("#list").innerHTML = tableString;
-    var items = document.querySelectorAll("#list td");
-      [].forEach.call(items, click);
-}
+    let items = document.querySelectorAll("#list td");
+    [].forEach.call(items, click);
+  }
 
-function click(element, index, array) {
-    element.addEventListener("click", function (event) {
-        if (forPaused === true && lastIndex === this) {
-            pause();
-        } else {
-            play(this.textContent || this.innerText, this);
-        }
+  function click(element, index, array) {
+    element.addEventListener("click", function(event) {
+      if (forPaused === true && lastIndex === this) {
+        pause();
+      } else {
+        play(this.textContent || this.innerText, this);
+      }
     });
-}
+  }
 
-function play(asset, elem) {
+  function play(asset, elem) {
     killClass(["activeMusicListItem", "progress"]);
     changeClass(elem, "progress");
     document.querySelector("h1").innerHTML = asset;
 
     if (lastIndex != elem) {
-        var link = './music/' + asset + '.mp3';
-        document.querySelector('#music').src = link;
-        lastIndex = elem;
+      let link = './music/' + asset + '.mp3';
+      document.querySelector('#music').src = link;
+      lastIndex = elem;
     }
 
-    document.querySelector('#music').oncanplaythrough = function () {
-        hasListener = true;
-        playing(elem);
+    document.querySelector('#music').oncanplaythrough = function() {
+      hasListener = true;
+      playing(elem);
     };
     if (hasListener) {
-        playing(elem);
+      playing(elem);
     }
-}
+  }
 
-function playing(elem) {
-    document.querySelector("#music").play();
+  function playing(elem) {
+  music.play();
     changeClass(elem, "activeMusicListItem");
     forPaused = true;
-}
+  }
 
-function pause() {
+  function pause() {
     killClass("activeMusicListItem");
-    document.querySelector("#music").pause();
+  music.pause();
     forPaused = false;
-}
-function changeClass(elem, applyClass) {
+  }
+
+  function changeClass(elem, applyClass) {
     elem.setAttribute("class", applyClass);
-}
-function killClass(findClasses) {
+  }
+
+  function killClass(findClasses) {
     if (typeof findClasses === 'string') {
-        findClasses = [findClasses];
+      findClasses = [findClasses];
     }
 
-    for (var i = 0; i < findClasses.length; i++) {
-        var set = document.querySelectorAll("." + findClasses[i]);
-            [].forEach.call(set, function (item) {
-            item.setAttribute("class", "");
-        });
+    for (let i = 0; i < findClasses.length; i++) {
+      let set = document.querySelectorAll("." + findClasses[i]);
+      [].forEach.call(set, function(item) {
+        item.setAttribute("class", "");
+      });
     }
-}
+  }
 
-function streamTime() {
-  time.innerHTML =Math.floor(this.currentTime*10) /10 ;
-
-}
-document.querySelector("#music").ontimeupdate = streamTime;
+  function streamTime() {
+    time.innerHTML = Math.floor(mus.currentTime * 1000) / 1000;
+  }
+  music.ontimeupdate = streamTime;
+})();

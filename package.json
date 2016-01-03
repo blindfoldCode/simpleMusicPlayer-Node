@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A basic music player built in node",
   "main": "app.js",
+  "jshintConfig":{  "esnext": true}, 
   "dependencies": {},
   "devDependencies": {
     "express": "^4.13.3",
