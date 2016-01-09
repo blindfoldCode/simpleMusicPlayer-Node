@@ -1,6 +1,6 @@
 window.onload = function() {
   'use strict';
-
+  // will have to change this
   $.ajax({
     url: './lists',
     success: function(res) {
