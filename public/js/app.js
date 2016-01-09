@@ -42,14 +42,18 @@ window.onload = function() {
       let link = `./music/${asset}.mp3`;
       music.src = link;
       lastIndex = elem;
+      console.log(elem);
     }
-    music.oncanplaythrough = function() {
+    if (lastIndex === elem) {
       playing(elem);
-    };
+    } else {
+      music.oncanplaythrough = function() {
+        playing(elem);
+      };
+    }
   }
 
   function playing(elem) {
-
     music.play();
     changeClass(elem, "activeMusicListItem");
     forPaused = true;
