@@ -49,6 +49,7 @@ window.onload = function() {
   }
 
   function playing(elem) {
+
     music.play();
     changeClass(elem, "activeMusicListItem");
     forPaused = true;
@@ -82,7 +83,12 @@ window.onload = function() {
 
 
   function streamTime() {
-    time.innerHTML = Math.floor(music.currentTime * 1000) / 1000;
+    const lead = (t) => { if (t < 10) {return "0" + t;}return t;};
+    let m = Math.floor(music.currentTime / 60),
+      s = Math.floor(music.currentTime - m * 60);
+
+
+    time.innerHTML = `${lead(m)} : ${lead(s)}`;
   }
   music.ontimeupdate = streamTime;
 };
