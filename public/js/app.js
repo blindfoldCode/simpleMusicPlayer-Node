@@ -4,37 +4,36 @@ window.onload = function() {
   $.ajax({
     url: './lists',
     success: function(res) {
-
       loop(res);
     }
   });
 
   let forPaused = false,
-    lastIndex;
-  const time = document.querySelector("#time"),
-    music = document.querySelector("#music");
+    lastIndex, element;
+  const music = document.querySelector("#music");
 
   function loop(arrayMusic) {
     let tableString = "";
     for (let mp3 of arrayMusic) {
-      tableString += `<tr><td>${mp3}</td></tr>`;
+      tableString += `<tr><td class="r">${mp3}</td><td class="time">00:00</td></tr>`;
     }
     document.querySelector("#list").innerHTML = tableString;
-    let items = document.querySelectorAll("#list td");
+    let items = document.querySelectorAll("#list .r");
     [].forEach.call(items, click);
   }
 
-  function click(element, index, array) {
-    element.addEventListener("click", function(event) {
+  function click(elements, index, array) {
+    elements.addEventListener("click", function(event) {
+
       if (forPaused === true && lastIndex === this) {
         pause();
       } else {
-        play(this.textContent || this.innerText, this);
+        loadPlay(this.textContent || this.innerText, this);
       }
     });
   }
 
-  function play(asset, elem) {
+  function loadPlay(asset, elem) {
     killClass(["activeMusicListItem", "progress"]);
     changeClass(elem, "progress");
     document.querySelector("h1").innerHTML = asset;
@@ -42,18 +41,22 @@ window.onload = function() {
       let link = `./music/${asset}.mp3`;
       music.src = link;
       lastIndex = elem;
-      console.log(elem);
     }
     if (lastIndex === elem) {
-      playing(elem);
+      play(elem);
     } else {
       music.oncanplaythrough = function() {
-        playing(elem);
+
+        play(elem);
       };
     }
   }
 
-  function playing(elem) {
+  function play(elem) {
+    if(element) {
+        element.nextSibling.innerHTML = `00:00`;
+    }
+    element = elem;
     music.play();
     changeClass(elem, "activeMusicListItem");
     forPaused = true;
@@ -84,15 +87,11 @@ window.onload = function() {
       }
     });
   }
-
-
+  const lead0 = (t) => { if (t < 10) {return "0" + t;}return t;};
   function streamTime() {
-    const lead = (t) => { if (t < 10) {return "0" + t;}return t;};
     let m = Math.floor(music.currentTime / 60),
       s = Math.floor(music.currentTime - m * 60);
-
-
-    time.innerHTML = `${lead(m)} : ${lead(s)}`;
+    element.nextSibling.innerHTML = `${lead0(m)}:${lead0(s)}`;
   }
-  music.ontimeupdate = streamTime;
+ music.ontimeupdate = streamTime;
 };
