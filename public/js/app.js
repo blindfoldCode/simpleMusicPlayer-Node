@@ -1,19 +1,44 @@
 window.onload = function() {
   'use strict';
   // will have to change this
-  $.ajax({
-    url: './lists',
-    success: function(res) {
-      loop(res);
-    }
-  });
+  /*  $.ajax({
+      url: './lists',
+      success: function(res) {
+        loop(res);
+      }
+    });*/
+
+  let getAsset = (url) => {
+    return new Promise((resolve, reject) => {
+      let request = new XMLHttpRequest();
+      request.open("GET", url);
+      request.onload = () => {
+        if (request.status === 200) {
+        const data = JSON.parse(request.response);
+          resolve(data);
+
+        } else {
+          reject(Error(`error code: ${request.statusText}`));
+        }
+      };
+      request.onerror = () => {
+        reject(Error('There was a network error.'));
+      };
+      request.send();
+    });
+  };
+
+  getAsset(`./lists`)
+    .then(loop);
 
   let forPaused = false,
     lastIndex, element;
   const music = document.querySelector("#music");
 
   function loop(arrayMusic) {
+    console.log();
     let tableString = "";
+
     for (let mp3 of arrayMusic) {
       tableString += `<tr><td class="r">${mp3}</td><td class="time">00:00</td></tr>`;
     }
@@ -53,8 +78,8 @@ window.onload = function() {
   }
 
   function play(elem) {
-    if(element) {
-        element.nextSibling.innerHTML = `00:00`;
+    if (element) {
+      element.nextSibling.innerHTML = `00:00`;
     }
     element = elem;
     music.play();
@@ -87,19 +112,26 @@ window.onload = function() {
       }
     });
   }
-  const lead0 = (t) => { if (t < 10) {return "0" + t;}return t;};
+  const lead0 = (t) => {
+    if (t < 10) {
+      return "0" + t;
+    }
+    return t;
+  };
+
   function streamTime() {
     let m = Math.floor(music.currentTime / 60),
       s = Math.floor(music.currentTime - m * 60);
     element.nextSibling.innerHTML = `${lead0(m)}:${lead0(s)}`;
   }
- music.ontimeupdate = streamTime;
-/*
- $.ajax({
-  url: './metaData/Kalimba',
-  success: function(res) {
-   $('<img/>').appendTo($('.col-md-12:eq(0)')).attr("src", `data:image/${res.type};base64,${res.data}`);
 
-  }
-});*/
+  music.ontimeupdate = streamTime;
+  /*
+   $.ajax({
+    url: './metaData/Kalimba',
+    success: function(res) {
+     $('<img/>').appendTo($('.col-md-12:eq(0)')).attr("src", `data:image/${res.type};base64,${res.data}`);
+
+    }
+  });*/
 };

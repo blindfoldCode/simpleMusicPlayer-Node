@@ -44,7 +44,7 @@ app.get('/metaData/:id', function(req, res) {
 
           console.log(tags.v2.image.byteLength);
       });*/
-  var parser = mm(fs.createReadStream('./music/Maid with the Flaxen Hair.mp3'), function(err, metadata) {
+  var parser = mm(fs.createReadStream('./music/SleepAway.mp3'), function(err, metadata) {
     if (err) throw err;
     var buf = new Buffer(metadata.picture[0].data);
     var     str = buf.toString('base64');
