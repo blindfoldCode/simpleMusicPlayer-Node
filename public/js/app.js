@@ -94,4 +94,12 @@ window.onload = function() {
     element.nextSibling.innerHTML = `${lead0(m)}:${lead0(s)}`;
   }
  music.ontimeupdate = streamTime;
+/*
+ $.ajax({
+  url: './metaData/Kalimba',
+  success: function(res) {
+   $('<img/>').appendTo($('.col-md-12:eq(0)')).attr("src", `data:image/${res.type};base64,${res.data}`);
+
+  }
+});*/
 };
