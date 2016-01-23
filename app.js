@@ -33,11 +33,13 @@ app.get('/music/:id', function(req, res) {
 });
 
 app.get('/metaData/:id', function(req, res) {
-  var parser = mm(fs.createReadStream(`./music/${id}.mp3`), function(err, metadata) {
+
+  var parser = mm(fs.createReadStream(`./music/${req.params.id}.mp3`), function(err, metadata) {
     if (err) throw err;
     var buf = new Buffer(metadata.picture[0].data);
     var     str = buf.toString('base64');
     const senr = {
+      id: req.params.id,
       type:metadata.picture[0].format,
       data:str
     };

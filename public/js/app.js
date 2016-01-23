@@ -1,14 +1,76 @@
 window.onload = function() {
   'use strict';
-  // will have to change this
-  /*  $.ajax({
-      url: './lists',
-      success: function(res) {
-        loop(res);
-      }
-    });*/
 
-  let getAsset = (url) => {
+
+  getAsset(`./lists`)
+    .then(loop)
+    .then(fetchImage)
+    .then(attachImage);
+
+  let forPaused = false,
+    lastIndex, element;
+  const music = document.querySelector("#music");
+
+  function loop(arrayMusic) {
+    let tableString = "";
+    for (let mp3 of arrayMusic) {
+      tableString += `<tr><td class="title" name="${mp3}">${mp3}</td><td class="time">00:00</td></tr>`;
+    }
+    document.querySelector("#list").innerHTML = tableString;
+    let items = document.querySelectorAll("#list .title");
+    //refactor --  move clicks to new promise
+    [].forEach.call(items, click);
+    return arrayMusic;
+  }
+
+  function click(elements, index, array) {
+    elements.addEventListener("click", function(event) {
+      if (forPaused === true && lastIndex === this) {
+        pause();
+      } else {
+        loadPlay(this.textContent || this.innerText, this);
+      }
+    });
+  }
+
+  /**-----Promises-------**/
+  function fetchImage(arrayMusic) {
+    let generate = generateReqFromArray(arrayMusic),
+      assets = [],
+      done = false;
+    const buildReturn = (data) => {
+      return data;
+    };
+    while (!done) {
+      let gen = generate.next();
+      done = gen.done;
+      if (!done) assets.push(gen.value);
+    }
+    return Promise.all(assets).then(buildReturn);
+
+  }
+
+  function attachImage(assetsArray) {
+    for (let asset of assetsArray) {
+      asset.id = document.querySelector(`td[name="${asset.id}"]`);
+      const parent = asset.id.parentNode;
+      let img = document.createElement('td')
+        .appendChild(document.createElement("img"));
+        img.src =`data:image/${asset.type};base64, ${asset.data}`;
+        img.width = 50;
+        img.height = 50;
+        parent.insertBefore(img.parentNode, asset.id);
+    }
+
+  }
+
+  function* generateReqFromArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      yield getAsset(`./metaData/${array[i]}`);
+    }
+  }
+
+  function getAsset(url) {
     return new Promise((resolve, reject) => {
       let request = new XMLHttpRequest();
       request.open("GET", url);
@@ -26,52 +88,8 @@ window.onload = function() {
       };
       request.send();
     });
-  };
-
-  getAsset(`./lists`)
-    .then(loop)
-    .then(attachImage);
-
-  let forPaused = false,
-    lastIndex, element;
-  const music = document.querySelector("#music");
-
-  function loop(arrayMusic) {
-    let tableString = "";
-    for (let mp3 of arrayMusic) {
-      tableString += `<tr><td class="r">${mp3}</td><td class="time">00:00</td></tr>`;
-    }
-    document.querySelector("#list").innerHTML = tableString;
-    let items = document.querySelectorAll("#list .r");
-    [].forEach.call(items, click);
-    return arrayMusic;
   }
-
-  function click(elements, index, array) {
-    elements.addEventListener("click", function(event) {
-      if (forPaused === true && lastIndex === this) {
-        pause();
-      } else {
-        loadPlay(this.textContent || this.innerText, this);
-      }
-    });
-  }
-
-  function attachImage(arrayMusic) {
-    let generate = generateReqFromArray(arrayMusic);
-    console.log(generate.next());
-    console.log(generate.next());
-    console.log(generate.next());
-
-
-  }
-
-function* generateReqFromArray (array) {
-  for(let i = 0; i < array.length; i++) {
-    yield array[i];
-  }
-}
-
+  ///-------------------------------------
   function loadPlay(asset, elem) {
     killClass(["activeMusicListItem", "progress"]);
     changeClass(elem, "progress");

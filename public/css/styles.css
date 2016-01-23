@@ -20,7 +20,7 @@ h1 {
     cursor: pointer
 }
 
-#list td:not(.activeMusicListItem):not(.progress):not(.time)::before {
+#list td:not(.activeMusicListItem):not(.title):not(.progress):not(.time)::before {
     content: url(../icons/play.svg)
 }
 
