@@ -1,5 +1,5 @@
 # Simple Music Player
-A simple music player built atop express & ES6
+A simple music player built atop Node(express) & ES6
 
 ## Install
 
