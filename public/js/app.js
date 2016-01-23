@@ -14,7 +14,7 @@ window.onload = function() {
       request.open("GET", url);
       request.onload = () => {
         if (request.status === 200) {
-        const data = JSON.parse(request.response);
+          const data = JSON.parse(request.response);
           resolve(data);
 
         } else {
@@ -29,27 +29,26 @@ window.onload = function() {
   };
 
   getAsset(`./lists`)
-    .then(loop);
+    .then(loop)
+    .then(attachImage);
 
   let forPaused = false,
     lastIndex, element;
   const music = document.querySelector("#music");
 
   function loop(arrayMusic) {
-    console.log();
     let tableString = "";
-
     for (let mp3 of arrayMusic) {
       tableString += `<tr><td class="r">${mp3}</td><td class="time">00:00</td></tr>`;
     }
     document.querySelector("#list").innerHTML = tableString;
     let items = document.querySelectorAll("#list .r");
     [].forEach.call(items, click);
+    return arrayMusic;
   }
 
   function click(elements, index, array) {
     elements.addEventListener("click", function(event) {
-
       if (forPaused === true && lastIndex === this) {
         pause();
       } else {
@@ -57,6 +56,21 @@ window.onload = function() {
       }
     });
   }
+
+  function attachImage(arrayMusic) {
+    let generate = generateReqFromArray(arrayMusic);
+    console.log(generate.next());
+    console.log(generate.next());
+    console.log(generate.next());
+
+
+  }
+
+function* generateReqFromArray (array) {
+  for(let i = 0; i < array.length; i++) {
+    yield array[i];
+  }
+}
 
   function loadPlay(asset, elem) {
     killClass(["activeMusicListItem", "progress"]);
@@ -71,7 +85,6 @@ window.onload = function() {
       play(elem);
     } else {
       music.oncanplaythrough = function() {
-
         play(elem);
       };
     }

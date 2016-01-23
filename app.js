@@ -33,18 +33,7 @@ app.get('/music/:id', function(req, res) {
 });
 
 app.get('/metaData/:id', function(req, res) {
-  /*
-      id3({
-          file: './music/Maid with the Flaxen Hair.mp3',
-          type: id3.OPEN_LOCAL
-      }, function (err, tags) {
-          // tags now contains your ID3 tags
-          res.send(tags);
-
-
-          console.log(tags.v2.image.byteLength);
-      });*/
-  var parser = mm(fs.createReadStream('./music/SleepAway.mp3'), function(err, metadata) {
+  var parser = mm(fs.createReadStream(`./music/${id}.mp3`), function(err, metadata) {
     if (err) throw err;
     var buf = new Buffer(metadata.picture[0].data);
     var     str = buf.toString('base64');
@@ -52,9 +41,6 @@ app.get('/metaData/:id', function(req, res) {
       type:metadata.picture[0].format,
       data:str
     };
-
-
-    console.log();
     res.send(senr);
   });
 
